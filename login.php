@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 $dsn = 'mysql:host=localhost;dbname=chatgpt;port=3307;charset=utf8mb4';
 $username = 'root';
@@ -13,11 +14,24 @@ try {
 // Get the message from the request body
 $data = json_decode(file_get_contents('php://input'), true);
 $username = $data['username'];
+$token = base_convert(hash('sha256', time() . mt_rand()), 16, 36);
 
 // Insert new message into database
-$stmt = $pdo->prepare("INSERT INTO user (username) value (:username)");
+$stmt = $pdo->prepare("INSERT INTO user (username, etat, token) value (:username, :etat, :token)");
 $stmt->bindValue(':username', $username);
+$stmt->bindValue(':etat', 1);
+$stmt->bindValue(':token', $token);
 if ($stmt->execute()) {
-    echo $username;
+    $select = $pdo->prepare('SELECT * FROM user where username = :username');
+    $select->bindValue(':username', $username);
+    if ($select->execute()) {
+        $datas = $select->fetchAll();
+        foreach ($datas as $data) {
+            echo json_encode([
+                'username'=> $username,
+                'token' => $data['token'],
+            ]);
+        }
+    }
 }
 

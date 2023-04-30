@@ -1,24 +1,18 @@
 <template>
-<h1>Username</h1>
 
-    <input type="text" v-model="username">
-    <button @click="setUsername">Send</button>
+  {{ username }}
 
-  {{username}}
 </template>
-
 <script>
 const axios = require('axios');
-
-
 
 export default {
 
   name: "UserName",
   data() {
-    return{
-      username : '',
-      connected : ''
+    return {
+      username: '',
+      connected: false
     }
   },
 
@@ -33,8 +27,10 @@ export default {
               if (response.data === this.username) {
                 alert('connected')
                 document.cookie = 'username=' + response.data
+                document.cookie = 'connected = true'
                 sessionStorage['user'] = response.data
                 sessionStorage['Connected'] = 'connected'
+                this.connected = this.recupererCookie('connected')
               } else {
                 alert('Please enter username & password');
               }
@@ -45,31 +41,19 @@ export default {
       }
     },
 
-    login: function() {
-      if (this.username !== '') {
-
-        axios.post('http://localhost:8000/login.php', {
-          request: 1,
-          username: this.username,
-
-        })
-            .then((response) => {
-              if (response.data === this.username) {
-                alert('connected')
-                sessionStorage['user'] = response.data
-                document.cookie = response.data
-                sessionStorage['Connected'] = 'connected'
-                window.location.href = "http://localhost:8080";
-              } else {
-                alert('Please enter username & password');
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+    recupererCookie(nom) {
+      nom = nom + "=";
+      let liste = document.cookie.split(';');
+      for (let i = 0; i < liste.length; i++) {
+        let c = liste[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nom) === 0) return c.substring(nom.length, c.length);
       }
-    }
-  }
+      return null;
+    },
+
+  },
+
 }
 </script>
 
