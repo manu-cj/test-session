@@ -4,6 +4,7 @@
     <input type="text" v-model="username">
     <button @click="setUsername">Send</button>
   </div>
+  {{datefix}}
 </template>
 
 <script>
@@ -17,8 +18,19 @@ export default {
   data() {
     return {
       username: '',
-      connected: 0
+      connected: 0,
+      date : '',
     }
+  },
+  computed: {
+    datefix() {
+      let now = new Date();
+      let time = now.getTime();
+      let expireTime = time + 1000*36000;
+      now.setTime(expireTime);
+      return now.toUTCString();
+    }
+
   },
 
   methods: {
@@ -30,12 +42,14 @@ export default {
             .then((response) => {
               console.log(response.data)
               if (response.data.username === this.username) {
-                alert('connected')
-                document.cookie = `token=${response.data.token}; path=/`
-                document.cookie = 'connected = true'
+                let now = new Date();
+                let time = now.getTime();
+                let expireTime = time + 1000*36000;
+                now.setTime(expireTime);
+                document.cookie = `token=${response.data.token};expires=${now.toUTCString()}; path=/`
                 sessionStorage['user'] = response.data.username
                 sessionStorage['Connected'] = 'connected'
-                this.connected = this.recupererCookie('connected')
+                this.connected = sessionStorage['Connected']
               } else {
                 alert('Please enter username & password');
               }
@@ -47,14 +61,11 @@ export default {
     },
 
     getConnect() {
-      console.log('Check-Connect')
       axios.get('http://localhost:8000/get-user.php', {
         params: {
-          username: sessionStorage['user'],
+          token: this.recupererCookie('token'),
         }
-      })
-          .then((response) => {
-            console.log(response)
+      }).then((response) => {
               this.connected = response.data[0].etat;
               this.username = response.data[0].username;
           })

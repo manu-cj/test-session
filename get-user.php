@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (isset($_GET['username'])) {
+if (isset($_GET['token'])) {
     $dsn = 'mysql:host=localhost;dbname=chatgpt;port=3307;charset=utf8mb4';
     $username = 'root';
     $password = '';
@@ -12,10 +12,10 @@ if (isset($_GET['username'])) {
     }
 
 // Get the message from the request body
-    $user = $_GET['username'];
+    $token = $_GET['token'];
 // Insert new message into database
-    $stmt = $pdo->prepare("SELECT * FROM user WHERE username = :username");
-    $stmt->bindValue(':username', $user);
+    $stmt = $pdo->prepare("SELECT * FROM user WHERE token = :token");
+    $stmt->bindValue(':token', $token);
     if ($stmt->execute()) {
         $datas = $stmt->fetchAll();
         foreach ($datas as $data) {
