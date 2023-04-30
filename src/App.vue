@@ -1,10 +1,13 @@
 <template>
-  <h1>Username</h1>
-  <div v-if="!connected">
-    <input type="text" v-model="username">
-    <button @click="setUsername">Send</button>
+  <div id="body" @mousemove="UpdateCookie">
+    <h1>Username</h1>
+    <div v-if="!connected">
+      <input type="text" v-model="username">
+      <button @click="setUsername">Send</button>
+    </div>
+    {{ datefix }}
   </div>
-  {{datefix}}
+
 </template>
 
 <script>
@@ -12,25 +15,19 @@ const axios = require('axios');
 
 export default {
   name: 'App',
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       username: '',
       connected: 0,
-      date : '',
+      date: '',
+      token: ''
     }
   },
   computed: {
     datefix() {
-      let now = new Date();
-      let time = now.getTime();
-      let expireTime = time + 1000*36000;
-      now.setTime(expireTime);
-      return now.toUTCString();
-    }
-
+      return this.recupererCookie('token');
+    },
   },
 
   methods: {
@@ -38,18 +35,18 @@ export default {
       if (this.username !== '') {
         axios.post('http://localhost:8000/login.php', {
           username: this.username,
-        })
-            .then((response) => {
+        }).then((response) => {
               console.log(response.data)
               if (response.data.username === this.username) {
                 let now = new Date();
                 let time = now.getTime();
-                let expireTime = time + 1000*36000;
+                let expireTime = time + 1000 * 36000;
                 now.setTime(expireTime);
                 document.cookie = `token=${response.data.token};expires=${now.toUTCString()}; path=/`
                 sessionStorage['user'] = response.data.username
                 sessionStorage['Connected'] = 'connected'
                 this.connected = sessionStorage['Connected']
+                this.token = response.data.token
               } else {
                 alert('Please enter username & password');
               }
@@ -66,13 +63,22 @@ export default {
           token: this.recupererCookie('token'),
         }
       }).then((response) => {
-              this.connected = response.data[0].etat;
-              this.username = response.data[0].username;
-          })
+        this.connected = response.data[0].etat;
+        this.username = response.data[0].username;
+        this.token = this.recupererCookie('token');
+      })
           .catch(function (error) {
             console.log(error);
           })
 
+    },
+
+    UpdateCookie() {
+      let now = new Date();
+      let time = now.getTime();
+      let expireTime = time + 1000 * 36000;
+      now.setTime(expireTime);
+      document.cookie = `token=${this.token}; expires=${now.toUTCString()}; path=/;`;
     },
 
     recupererCookie(nom) {
@@ -102,7 +108,14 @@ export default {
   color: #2c3e50;
   margin-top: 60px;
 }
+
 h1 {
-  color : #006d80;
+  color: #006d80;
+}
+
+#body {
+  width: 100%;
+  height: 100%;
+  background-color: lightgreen;
 }
 </style>
