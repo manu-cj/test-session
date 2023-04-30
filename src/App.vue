@@ -5,9 +5,8 @@
       <input type="text" v-model="username">
       <button @click="setUsername">Send</button>
     </div>
-    {{ datefix }}
   </div>
-
+{{timer}}
 </template>
 
 <script>
@@ -21,13 +20,39 @@ export default {
       username: '',
       connected: 0,
       date: '',
-      token: ''
+      token: '',
+      timeInMilliseconde: 10000,
+      timer : 60,
+      timerStart : false,
+      chrono : null
     }
   },
+
+  watch: {
+    timer: {
+      handler(value) {
+          if (value > 0) {
+            setTimeout(()=>{
+              this.timer--
+            }, 1000);
+          }
+      },
+      immediate : true
+    }
+  },
+
+
   computed: {
     datefix() {
-      return this.recupererCookie('token');
+      let now = new Date();
+      let time = now.getTime();
+      let expireTime = time + 100 * 36000;
+      now.setTime(expireTime);
+      return now;
     },
+
+
+
   },
 
   methods: {
@@ -40,9 +65,9 @@ export default {
               if (response.data.username === this.username) {
                 let now = new Date();
                 let time = now.getTime();
-                let expireTime = time + 1000 * 36000;
+                let expireTime = time +  100 * 36000;
                 now.setTime(expireTime);
-                document.cookie = `token=${response.data.token};expires=${now.toUTCString()}; path=/`
+                document.cookie = `token=${response.data.token};expires=${now}; path=/`
                 sessionStorage['user'] = response.data.username
                 sessionStorage['Connected'] = 'connected'
                 this.connected = sessionStorage['Connected']
@@ -58,27 +83,40 @@ export default {
     },
 
     getConnect() {
-      axios.get('http://localhost:8000/get-user.php', {
-        params: {
-          token: this.recupererCookie('token'),
-        }
-      }).then((response) => {
-        this.connected = response.data[0].etat;
-        this.username = response.data[0].username;
-        this.token = this.recupererCookie('token');
-      })
-          .catch(function (error) {
-            console.log(error);
-          })
 
+        axios.get('http://localhost:8000/get-user.php', {
+          params: {
+            token: this.recupererCookie('token'),
+          }
+        }).then((response) => {
+          this.connected = response.data[0].etat;
+          this.username = response.data[0].username;
+          this.token = response.data[0].token;
+        })
+            .catch(function (error) {
+              console.log(error);
+            })
     },
 
     UpdateCookie() {
       let now = new Date();
       let time = now.getTime();
-      let expireTime = time + 1000 * 36000;
+      let expireTime = time +  100 * 36000;
       now.setTime(expireTime);
-      document.cookie = `token=${this.token}; expires=${now.toUTCString()}; path=/;`;
+      this.token = this.recupererCookie('token')
+
+      if (this.token !== ''){
+        document.cookie = `token=${this.token}; expires=${now}; path=/;`;
+        this.timerStart = true
+        clearTimeout(this.chrono);
+        this.chrono = setTimeout(this.expireCookie, 60000);
+      }
+
+    },
+
+    expireCookie() {
+      document.cookie = `token=${this.token}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+      location.href = 'http://localhost:8080/';
     },
 
     recupererCookie(nom) {
@@ -95,6 +133,7 @@ export default {
 
   created() {
     this.getConnect();
+
   },
 }
 </script>
