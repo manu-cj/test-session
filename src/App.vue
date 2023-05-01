@@ -18,7 +18,8 @@
       <button @click="setUsername">Send</button>
     </div>
   </div>
-  {{ timer }}
+  <h3>{{ minutes }} : {{seconds}}</h3>
+
 
 </template>
 
@@ -46,24 +47,24 @@ export default {
       date: '',
       token: '',
       timeInMilliseconde: 10000,
-      timer: 600,
-      timerStart: false,
+      timer: 1800,
+      timerStart: '',
       chrono: null
     }
   },
 
-  watch: {
-    timer: {
-      handler(value) {
-        if (value > 0) {
-          setTimeout(() => {
-            this.timer--
-          }, 1000);
-        }
-      },
-      immediate: true
-    }
-  },
+  // watch: {
+  //   timer: {
+  //     handler(value) {
+  //       if (value > 0) {
+  //         setTimeout(() => {
+  //           this.timer--
+  //         }, 1000);
+  //       }
+  //     },
+  //     immediate: true
+  //   }
+  // },
 
 
   computed: {
@@ -73,6 +74,13 @@ export default {
       let expireTime = time + 100 * 36000;
       now.setTime(expireTime);
       return now;
+    },
+
+    minutes() {
+      return Math.floor(this.timer / 60);
+    },
+    seconds() {
+      return this.timer % 60;
     },
 
 
@@ -106,7 +114,6 @@ export default {
     },
 
     getConnect() {
-
       axios.get('http://localhost:8000/get-user.php', {
         params: {
           token: this.recupererCookie('token'),
@@ -127,13 +134,20 @@ export default {
       let expireTime = time + 100 * 36000;
       now.setTime(expireTime);
       this.token = this.recupererCookie('token')
+      this.timer = 1800
+      this.startTimer()
 
       if (this.token !== '') {
         document.cookie = `token=${this.token}; expires=${now}; path=/;`;
-        this.timerStart = true
         clearTimeout(this.chrono);
         this.chrono = setTimeout(this.expireCookie, 600000);
       }
+    },
+    startTimer(){
+      clearTimeout(this.timerStart)
+      this.timerStart = setInterval(()=>{
+        this.timer--
+      }, 1000)
 
     },
 
@@ -156,6 +170,7 @@ export default {
 
   created() {
     this.getConnect();
+    this.startTimer();
     if (!this.recupererCookie('color-name')) {
       document.cookie = `color-name=white; path=/`
     }
