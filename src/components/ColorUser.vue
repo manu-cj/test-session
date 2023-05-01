@@ -7,7 +7,10 @@
          :style="{backgroundColor : color.data}"
          @click="colorClick(color.data)">
     </div>
-    <button id="validate-button">Valider</button>
+    <div id="btn-display">
+      <button id="validate-button">Valider</button>
+    </div>
+
   </div>
 </template>
 
@@ -38,8 +41,8 @@ export default {
     colorClick(color) {
       this.choice = color;
       document.querySelector('#' + color).style.border = 'white 2px groove';
-      document.querySelector('#' + color).style.width = '25px';
-      document.querySelector('#' + color).style.height = '25px';
+      document.querySelector('#' + color).style.width = '22px';
+      document.querySelector('#' + color).style.height = '22px';
     }
   },
   watch: {
@@ -48,8 +51,8 @@ export default {
       console.log(newvalue)
       if (oldvalue !== 'none'){
         document.querySelector('#'+oldvalue).style.border = 'black 2px solid';
-        document.querySelector('#' + oldvalue).style.width = '25px';
-        document.querySelector('#' + oldvalue).style.height = '25px';
+        document.querySelector('#' + oldvalue).style.width = '22px';
+        document.querySelector('#' + oldvalue).style.height = '22px';
       }
     }
   }
@@ -58,19 +61,16 @@ export default {
 
 <style scoped>
 #colors {
-  width: 170px;
+  width: 94%;
   height: 35%;
-  padding: 15px;
   border: #00805e 5px solid;
-  border-radius: 0 0 20px 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   justify-content:center;
-  align-content: space-between;
   align-items: center;
-  box-shadow: inset 0 0 2000px rgba(44, 53, 61, 0.93);
-  background-color: rgb(5, 52, 59);
+  box-shadow: inset 0 0 2000px #37383f;
+  background-color: #37383f;
   backdrop-filter: blur(5px);
 }
 #username {
@@ -78,8 +78,8 @@ export default {
 }
 
 .color-choice {
-  width: 25px;
-  height: 25px;
+  width: 22px;
+  height: 22px;
   margin: 2px;
   border: 2px solid rgba(35, 35, 35, 0.94);
   border-radius: 50%;
@@ -97,6 +97,10 @@ export default {
 #validate-button:hover {
   background-color: #025741;
   border-color: lightgreen;
+}
+
+#btn-display {
+  width: 100%;
 }
 
 .color-selected {

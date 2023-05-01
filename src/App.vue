@@ -1,12 +1,16 @@
 <template>
   <div id="body" @mousemove="UpdateCookie">
-    <div id="display">
-      <ChatBox/>
-      <div id="user-display">
-        <UserList/>
-        <ColorUser :username="username"></ColorUser>
+    <div id="message-box">
+      <div id="display">
+        <ChatBox/>
+        <div id="user-display">
+          <UserList/>
+          <ColorUser :username="username"></ColorUser>
+        </div>
       </div>
+      <SendMessages v-if="connected"></SendMessages>
     </div>
+
 
     <h1>Username</h1>
     <div v-if="!connected">
@@ -14,7 +18,7 @@
       <button @click="setUsername">Send</button>
     </div>
   </div>
-{{timer}}
+  {{ timer }}
 
 </template>
 
@@ -22,11 +26,14 @@
 import ColorUser from "@/components/ColorUser";
 import ChatBox from "@/components/ChatBox";
 import UserList from "@/components/UserList";
+import SendMessages from "@/components/SendMessages";
+
 const axios = require('axios');
 
 export default {
   name: 'App',
   components: {
+    SendMessages,
     UserList,
     ChatBox,
     ColorUser
@@ -39,22 +46,22 @@ export default {
       date: '',
       token: '',
       timeInMilliseconde: 10000,
-      timer : 600,
-      timerStart : false,
-      chrono : null
+      timer: 600,
+      timerStart: false,
+      chrono: null
     }
   },
 
   watch: {
     timer: {
       handler(value) {
-          if (value > 0) {
-            setTimeout(()=>{
-              this.timer--
-            }, 1000);
-          }
+        if (value > 0) {
+          setTimeout(() => {
+            this.timer--
+          }, 1000);
+        }
       },
-      immediate : true
+      immediate: true
     }
   },
 
@@ -69,7 +76,6 @@ export default {
     },
 
 
-
   },
 
   methods: {
@@ -78,21 +84,21 @@ export default {
         axios.post('http://localhost:8000/login.php', {
           username: this.username,
         }).then((response) => {
-              console.log(response.data)
-              if (response.data.username === this.username) {
-                let now = new Date();
-                let time = now.getTime();
-                let expireTime = time +  100 * 36000;
-                now.setTime(expireTime);
-                document.cookie = `token=${response.data.token};expires=${now}; path=/`
-                sessionStorage['user'] = response.data.username
-                sessionStorage['Connected'] = 'connected'
-                this.connected = sessionStorage['Connected']
-                this.token = response.data.token
-              } else {
-                alert('Please enter username & password');
-              }
-            })
+          console.log(response.data)
+          if (response.data.username === this.username) {
+            let now = new Date();
+            let time = now.getTime();
+            let expireTime = time + 100 * 36000;
+            now.setTime(expireTime);
+            document.cookie = `token=${response.data.token};expires=${now}; path=/`
+            sessionStorage['user'] = response.data.username
+            sessionStorage['Connected'] = 'connected'
+            this.connected = sessionStorage['Connected']
+            this.token = response.data.token
+          } else {
+            alert('Please enter username & password');
+          }
+        })
             .catch(function (error) {
               console.log(error);
             });
@@ -101,28 +107,28 @@ export default {
 
     getConnect() {
 
-        axios.get('http://localhost:8000/get-user.php', {
-          params: {
-            token: this.recupererCookie('token'),
-          }
-        }).then((response) => {
-          this.connected = response.data[0].etat;
-          this.username = response.data[0].username;
-          this.token = response.data[0].token;
-        })
-            .catch(function (error) {
-              console.log(error);
-            })
+      axios.get('http://localhost:8000/get-user.php', {
+        params: {
+          token: this.recupererCookie('token'),
+        }
+      }).then((response) => {
+        this.connected = response.data[0].etat;
+        this.username = response.data[0].username;
+        this.token = response.data[0].token;
+      })
+          .catch(function (error) {
+            console.log(error);
+          })
     },
 
     UpdateCookie() {
       let now = new Date();
       let time = now.getTime();
-      let expireTime = time +  100 * 36000;
+      let expireTime = time + 100 * 36000;
       now.setTime(expireTime);
       this.token = this.recupererCookie('token')
 
-      if (this.token !== ''){
+      if (this.token !== '') {
         document.cookie = `token=${this.token}; expires=${now}; path=/;`;
         this.timerStart = true
         clearTimeout(this.chrono);
@@ -172,10 +178,10 @@ h1 {
 #body {
   width: 100%;
   height: 100%;
-  background-color: #12374b;
+  background-color: #0d263a;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-content: center;
   align-items: center;
 }
@@ -191,8 +197,17 @@ h1 {
 }
 
 #user-display {
+  width: 15%;
   height: 510px;
   display: flex;
   flex-direction: column;
+}
+
+#message-box {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
