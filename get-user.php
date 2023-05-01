@@ -22,14 +22,7 @@ if (isset($_GET['token'])) {
                 echo  json_encode([
                     $data
                 ]);
-
-
         }
-
-
     }
-
 }
-
-
 ?>

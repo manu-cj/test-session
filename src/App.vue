@@ -94,6 +94,7 @@ export default {
       if (this.username !== '') {
         axios.post('http://localhost:8000/login.php', {
           username: this.username,
+          color: this.recupererCookie('color-name')
         }).then((response) => {
           console.log(response.data)
           if (response.data.username === this.username) {

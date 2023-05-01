@@ -1,6 +1,9 @@
 <template>
 <div id="display-messages">
-  <textarea></textarea>
+  <form>
+    <input type="text" placeholder="Envoyer un message">
+    <button>⫸</button>
+  </form>
 </div>
 </template>
 
@@ -21,9 +24,14 @@ export default {
   align-content: center;
 }
 
-textarea {
+form {
   width: 100%;
-  height: auto;
+  height: 100%;
+}
+
+form input[type=text] {
+  width: 90%;
+  height: 100%;
   box-sizing: border-box;
   border: 3px solid #ccc;
   -webkit-transition: 0.5s;
@@ -31,12 +39,23 @@ textarea {
   outline: none;
   font-size: large;
   padding: 10px;
-  border-radius: 0 0 15px 0;
 }
 
-textarea:focus {
+form input[type=text]:focus {
   border: 3px solid #036b58;
   color: #00805e;
+}
+
+form button {
+  width: 10%;
+  height: 95%;
+  outline: none;
+  padding: 10px;
+  border: 3px solid #3bad81;
+  background-color: #3bad81;
+  border-radius: 0 0 15px 0;
+  cursor: pointer;
+  box-sizing: border-box;
 }
 
 </style>
