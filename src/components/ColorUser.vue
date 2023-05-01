@@ -1,7 +1,7 @@
 <template>
   <div id="colors">
     <div id="username">
-      <p :style="{color : choice}"><b>{{username}}</b></p>
+      <p :style="{color : colorCookie}"><b>{{username}}</b></p>
     </div>
     <div :id="color.data" class="color-choice" v-for="color in colors" :key="color"
          :style="{backgroundColor : color.data}"
@@ -10,7 +10,6 @@
     <div id="btn-display">
       <button id="validate-button">Valider</button>
     </div>
-
   </div>
 </template>
 
@@ -35,7 +34,7 @@ export default {
     }
   },
 
-  props : ['username'],
+  props : ['username', 'colorCookie'],
 
   methods: {
     colorClick(color) {
@@ -43,6 +42,7 @@ export default {
       document.querySelector('#' + color).style.border = 'white 2px groove';
       document.querySelector('#' + color).style.width = '22px';
       document.querySelector('#' + color).style.height = '22px';
+      document.cookie = `color-name=${this.choice}; path=/`
     }
   },
   watch: {
@@ -55,7 +55,9 @@ export default {
         document.querySelector('#' + oldvalue).style.height = '22px';
       }
     }
-  }
+  },
+
+
 }
 </script>
 

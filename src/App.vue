@@ -5,7 +5,7 @@
         <ChatBox/>
         <div id="user-display">
           <UserList/>
-          <ColorUser :username="username"></ColorUser>
+          <ColorUser :username="username" :color-cookie="recupererCookie('color-name')"></ColorUser>
         </div>
       </div>
       <SendMessages v-if="connected"></SendMessages>
@@ -156,6 +156,9 @@ export default {
 
   created() {
     this.getConnect();
+    if (!this.recupererCookie('color-name')) {
+      document.cookie = `color-name=white; path=/`
+    }
 
   },
 }
