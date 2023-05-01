@@ -13,8 +13,9 @@ export default {
 <style scoped>
 #user-list {
   width: 94%;
-  height: 70%;
+  min-height: 60%;
   border: #00805e 5px solid;
+  border-bottom: 0 ;
   background-color: #37383f;
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
-  <div id="colors">
+  <div id="colors" v-if="modif">
+    <div id="close-display">
+      <button id="close-button" @click="closeButton">❌</button>
+    </div>
     <div id="username">
       <p :style="{color : colorCookie}"><b>{{username}}</b></p>
     </div>
@@ -10,6 +13,9 @@
     <div id="btn-display">
       <button id="validate-button">Valider</button>
     </div>
+  </div>
+  <div id="user-color" v-else>
+    <p @click="colorDisplay">Changer la couleur</p>
   </div>
 </template>
 
@@ -31,6 +37,7 @@ export default {
         {data: 'teal'},
       ],
       choice: 'none',
+      modif : false,
     }
   },
 
@@ -43,6 +50,14 @@ export default {
       document.querySelector('#' + color).style.width = '22px';
       document.querySelector('#' + color).style.height = '22px';
       document.cookie = `color-name=${this.choice}; path=/`
+    },
+    colorDisplay(){
+      this.modif = true
+      document.querySelector('#user-color').display = 'none';
+    },
+    closeButton(){
+      this.modif = false
+
     }
   },
   watch: {
@@ -64,7 +79,7 @@ export default {
 <style scoped>
 #colors {
   width: 94%;
-  height: 35%;
+  height: 37%;
   border: #00805e 5px solid;
   display: flex;
   flex-direction: row;
@@ -94,6 +109,7 @@ export default {
   color: white;
   border-radius: 10px;
   cursor: pointer;
+  margin-top: 15px;
 }
 
 #validate-button:hover {
@@ -101,18 +117,42 @@ export default {
   border-color: lightgreen;
 }
 
-#btn-display {
+#close-display {
   width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: end;
+  align-content: end;
 }
 
-.color-selected {
-  width: 28px;
-  height: 28px;
-  margin-top: 8px;
-  border: 2px solid rgba(35, 35, 35, 0.94);
-  border-radius: 50%;
+#close-button {
+  color: red;
+  border: none;
+  background-color: #37383f;
   cursor: pointer;
-  z-index: 0;
 }
+
+#user-color {
+  width: 94%;
+  height: 37%;
+  border: #00805e 5px solid;
+  border-top: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content:center;
+  align-items: end;
+  box-shadow: inset 0 0 2000px #37383f;
+  background-color: #37383f;
+  backdrop-filter: blur(5px);
+}
+
+#user-color p {
+  color: #00805e;
+  cursor: pointer;
+  margin-bottom: 5px;
+}
+
+
 
 </style>
