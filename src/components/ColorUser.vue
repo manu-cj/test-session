@@ -27,7 +27,7 @@ export default {
       colors: [
         {data: 'white'},
         {data: 'black'},
-        {data: 'blue'},
+        {data: 'cyan'},
         {data: 'red'},
         {data: 'purple'},
         {data: 'coral'},

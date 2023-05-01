@@ -18,7 +18,10 @@
       <button @click="setUsername">Send</button>
     </div>
   </div>
-  <h3>{{ minutes }} : {{seconds}}</h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes <= 60">{{ minutes }} : 0{{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10"> 0{{ minutes }} : {{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10 && seconds <10"> 0{{ minutes }} : 0{{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-else> {{ minutes }} : {{seconds}}  </h3>
 
 
 </template>
@@ -47,7 +50,7 @@ export default {
       date: '',
       token: '',
       timeInMilliseconde: 10000,
-      timer: 1800,
+      timer: 3600,
       timerStart: '',
       chrono: null
     }
@@ -134,13 +137,13 @@ export default {
       let expireTime = time + 100 * 36000;
       now.setTime(expireTime);
       this.token = this.recupererCookie('token')
-      this.timer = 1800
+      this.timer = 3600
       this.startTimer()
 
       if (this.token !== '') {
         document.cookie = `token=${this.token}; expires=${now}; path=/;`;
         clearTimeout(this.chrono);
-        this.chrono = setTimeout(this.expireCookie, 600000);
+        this.chrono = setTimeout(this.expireCookie, 3600000);
       }
     },
     startTimer(){

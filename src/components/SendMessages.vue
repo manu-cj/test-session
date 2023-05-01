@@ -1,6 +1,6 @@
 <template>
 <div id="display-messages">
-  <input type="text" placeholder="Envoyer un message">
+  <textarea></textarea>
 </div>
 </template>
 
@@ -21,8 +21,9 @@ export default {
   align-content: center;
 }
 
-input[type=text] {
+textarea {
   width: 100%;
+  height: auto;
   box-sizing: border-box;
   border: 3px solid #ccc;
   -webkit-transition: 0.5s;
@@ -33,7 +34,7 @@ input[type=text] {
   border-radius: 0 0 15px 0;
 }
 
-input[type=text]:focus {
+textarea:focus {
   border: 3px solid #036b58;
   color: #00805e;
 }
