@@ -7,6 +7,7 @@
          :style="{backgroundColor : color.data}"
          @click="colorClick(color.data)">
     </div>
+    <button id="validate-button">Valider</button>
   </div>
   {{ choice }}
 </template>
@@ -85,6 +86,18 @@ export default {
   border-radius: 50%;
   cursor: pointer;
   z-index: 1;
+}
+
+#validate-button {
+  background-color: #00805e;
+  color: white;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#validate-button:hover {
+  background-color: #025741;
+  border-color: lightgreen;
 }
 
 .color-selected {
