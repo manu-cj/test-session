@@ -18,10 +18,10 @@
       <button @click="setUsername">Send</button>
     </div>
   </div>
-  <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes <= 60">{{ minutes }} : 0{{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes">{{ minutes }} : 0{{seconds}}  </h3>
   <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10"> 0{{ minutes }} : {{seconds}}  </h3>
   <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10 && seconds <10"> 0{{ minutes }} : 0{{seconds}}  </h3>
-  <h3 :style="{color : recupererCookie('color-name')}" v-else> {{ minutes }} : {{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes> 9 && seconds > 9"> {{ minutes }} : {{seconds}}  </h3>
 
 
 </template>
