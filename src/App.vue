@@ -7,14 +7,19 @@
     </div>
   </div>
 {{timer}}
+  <ColorUser :username="username"></ColorUser>
 </template>
 
 <script>
+import ColorUser from "@/components/ColorUser";
 const axios = require('axios');
 
 export default {
   name: 'App',
-  components: {},
+  components: {
+    ColorUser
+
+  },
   data() {
     return {
       username: '',
@@ -22,7 +27,7 @@ export default {
       date: '',
       token: '',
       timeInMilliseconde: 10000,
-      timer : 60,
+      timer : 600,
       timerStart : false,
       chrono : null
     }
@@ -109,7 +114,7 @@ export default {
         document.cookie = `token=${this.token}; expires=${now}; path=/;`;
         this.timerStart = true
         clearTimeout(this.chrono);
-        this.chrono = setTimeout(this.expireCookie, 60000);
+        this.chrono = setTimeout(this.expireCookie, 600000);
       }
 
     },
