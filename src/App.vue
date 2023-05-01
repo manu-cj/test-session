@@ -1,5 +1,13 @@
 <template>
   <div id="body" @mousemove="UpdateCookie">
+    <div id="display">
+      <ChatBox/>
+      <div id="user-display">
+        <UserList/>
+        <ColorUser :username="username"></ColorUser>
+      </div>
+    </div>
+
     <h1>Username</h1>
     <div v-if="!connected">
       <input type="text" v-model="username">
@@ -7,16 +15,20 @@
     </div>
   </div>
 {{timer}}
-  <ColorUser :username="username"></ColorUser>
+
 </template>
 
 <script>
 import ColorUser from "@/components/ColorUser";
+import ChatBox from "@/components/ChatBox";
+import UserList from "@/components/UserList";
 const axios = require('axios');
 
 export default {
   name: 'App',
   components: {
+    UserList,
+    ChatBox,
     ColorUser
 
   },
@@ -160,6 +172,27 @@ h1 {
 #body {
   width: 100%;
   height: 100%;
-  background-color: lightgreen;
+  background-color: #12374b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+}
+
+#display {
+  width: 100%;
+  height: 500px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+}
+
+#user-display {
+  height: 510px;
+  display: flex;
+  flex-direction: column;
 }
 </style>

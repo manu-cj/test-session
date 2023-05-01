@@ -9,7 +9,6 @@
     </div>
     <button id="validate-button">Valider</button>
   </div>
-  {{ choice }}
 </template>
 
 <script>
@@ -60,10 +59,10 @@ export default {
 <style scoped>
 #colors {
   width: 170px;
-  height: 150px;
+  height: 35%;
   padding: 15px;
   border: #00805e 5px solid;
-  border-radius: 20px;
+  border-radius: 0 0 20px 0;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
