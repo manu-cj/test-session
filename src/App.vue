@@ -210,7 +210,7 @@ h1 {
 
 #display {
   width: 100%;
-  height: 500px;
+  height: 700px;
   display: flex;
   flex-direction: row;
   align-content: center;
@@ -219,14 +219,14 @@ h1 {
 }
 
 #user-display {
-  width: 15%;
-  height: 510px;
+  width: 16.4%;
+  height: 710px;
   display: flex;
   flex-direction: column;
 }
 
 #message-box {
-  width: 60%;
+  width: 80%;
   height: 100%;
   display: flex;
   flex-direction: column;

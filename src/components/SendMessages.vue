@@ -15,7 +15,7 @@ export default {
 
 <style scoped>
 #display-messages {
-  width: 65%;
+  width: 66%;
   height: 50px;
   border: #00805e 5px solid;
   border-radius: 0 0 20px 0;
@@ -51,7 +51,7 @@ form button {
   height: 95%;
   outline: none;
   padding: 10px;
-  border: 3px solid #3bad81;
+  border: 5px solid #3bad81;
   background-color: #3bad81;
   border-radius: 0 0 15px 0;
   cursor: pointer;
