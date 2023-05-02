@@ -1,15 +1,54 @@
 <template>
 <div id="display-messages">
-  <form>
-    <input type="text" placeholder="Envoyer un message">
+  <form @submit.prevent="subMessage">
+    <input type="text" placeholder="Envoyer un message" v-model="message">
     <button>⫸</button>
   </form>
 </div>
+  <div id="is-send" v-if="isSend">Message envoyé</div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "SendMessages"
+  name: "SendMessages",
+  data(){
+    return{
+      message : '',
+      isSend : false
+    }
+  },
+  props: ['username'],
+  methods: {
+    subMessage(){
+      axios.post('http://localhost:8000/add-message.php', {
+        message : this.message,
+        color : this.recupererCookie('color-name'),
+        token : this.recupererCookie('token')
+      })
+          .then((response)=> {
+            this.isSend = response.data
+            this.message = ''
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+
+    recupererCookie(nom) {
+      nom = nom + "=";
+      let liste = document.cookie.split(';');
+      for (let i = 0; i < liste.length; i++) {
+        let c = liste[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nom) === 0) return c.substring(nom.length, c.length);
+      }
+      return null;
+    },
+
+
+  },
 }
 </script>
 

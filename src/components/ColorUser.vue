@@ -55,7 +55,7 @@ export default {
       document.querySelector('#' + color).style.border = 'white 2px groove';
       document.querySelector('#' + color).style.width = '35px';
       document.querySelector('#' + color).style.height = '35px';
-      document.cookie = `color-name=${this.choice}; path=/`
+
     },
     colorDisplay(){
       this.modif = true
@@ -73,6 +73,7 @@ export default {
           .then((response)=> {
             this.isUpdate = response.data
             this.modif = false
+            document.cookie = `color-name=${this.choice}; path=/`
           })
           .catch(function (error) {
             console.log(error);
@@ -98,6 +99,20 @@ export default {
         document.querySelector('#'+oldvalue).style.border = 'black 2px solid';
         document.querySelector('#' + oldvalue).style.width = '35px';
         document.querySelector('#' + oldvalue).style.height = '35px';
+      }
+    },
+
+    isUpdate(newvalue) {
+      if (newvalue === 'couleur changé') {
+        setTimeout(()=>{
+          document.querySelector('#succesChange').style.transform= 'rotateX(360deg)';
+          setTimeout(()=>{
+            document.querySelector('#succesChange').style.opacity = '0.2';
+            setTimeout(()=>{
+              this.isUpdate = ''
+            }, 250)
+          }, 500)
+        }, 5000)
       }
     }
   },
@@ -202,6 +217,8 @@ export default {
   background-color: #00805e;
   animation-name: success;
   animation-duration: 1000ms;
+  transition: transform 1s;
+  transform-style: preserve-3d;
 }
 
 @keyframes success {
@@ -212,7 +229,9 @@ export default {
   to {
     width: 100%;
     background-color: #00805e;
+
   }
 }
+
 
 </style>
