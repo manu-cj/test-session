@@ -1,16 +1,49 @@
 <template>
 <div id="chatBox">
   <h3 id="messages" v-if="messagesList.length < 1">Aucun message pour le moment</h3>
+  <div class="messages" v-else v-for="(messageList, index) in messagesList" :key="index">
+    <p><b><span style="color: #ffffff">{{ messageList.hours}}</span> {{ messageList.username }} :
+    </b> <span style="color: #fff6f6; word-break: break-word;
+    white-space: normal;">{{ messageList.text }}</span></p>
+  </div>
 </div>
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "ChatBox",
   data() {
     return {
-      messagesList : []
+      messagesList : [
+        {id:"",
+          text:"q",
+          color:"",
+          username:"",
+          date:"",
+          hours:"",
+        }
+      ]
     }
+  },
+  methods: {
+    async getMessages() {
+      try {
+        const response = await axios.get('http://localhost:8000/get-messages.php');
+        this.messagesList = response.data
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+
+  mounted() {
+    this.getMessages()
+    setInterval(()=>{
+      this.getMessages()
+    }, 2500)
   }
 }
 </script>
