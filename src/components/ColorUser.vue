@@ -12,16 +12,19 @@
          @click="colorClick(color.data)">
     </div>
     <div id="btn-display">
-      <button id="validate-button">Valider</button>
+      <button id="validate-button" @click="sendColorChoice">Valider</button>
     </div>
   </div>
   <div id="user-color" v-if="username && modif === false">
-    <p>Se déconnecter</p>
-    <p @click="colorDisplay">Changer la couleur</p>
+    <p id="logout">Se déconnecter</p>
+    <div id="succesChange" v-if="isUpdate">{{isUpdate}}</div>
+    <p id="colorBtn" @click="colorDisplay">Changer la couleur</p>
   </div>
 </template>
 
 <script>
+const axios = require('axios');
+
 export default {
   name: "ColorUser",
   data() {
@@ -40,6 +43,7 @@ export default {
       ],
       choice: 'none',
       modif : false,
+      isUpdate : ''
     }
   },
 
@@ -59,8 +63,32 @@ export default {
     },
     closeButton(){
       this.modif = false
+    },
 
-    }
+    sendColorChoice(){
+      axios.post('http://localhost:8000/color-update.php', {
+        color : this.choice,
+        token : this.recupererCookie('token')
+      })
+          .then((response)=> {
+            this.isUpdate = response.data
+            this.modif = false
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+
+    recupererCookie(nom) {
+      nom = nom + "=";
+      let liste = document.cookie.split(';');
+      for (let i = 0; i < liste.length; i++) {
+        let c = liste[i];
+        while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nom) === 0) return c.substring(nom.length, c.length);
+      }
+      return null;
+    },
   },
   watch: {
     choice(newvalue, oldvalue) {
@@ -158,6 +186,33 @@ export default {
 
 #btn-display {
   width: 100%;
+}
+
+#logout {
+  width: 100%;
+}
+
+#colorBtn{
+  width: 100%;
+}
+
+#succesChange {
+  width: 100%;
+  color: #cccccc;
+  background-color: #00805e;
+  animation-name: success;
+  animation-duration: 1000ms;
+}
+
+@keyframes success {
+  from {
+    width: 80%;
+    background-color: #2e312e;
+  }
+  to {
+    width: 100%;
+    background-color: #00805e;
+  }
 }
 
 </style>
