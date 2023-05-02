@@ -20,7 +20,7 @@ $dt->modify("-3 hours");
 $lastHours = $dt->format('H:i:s') ;
 
 // Insert new message into database
-$stmt = $pdo->prepare("SELECT * FROM messages WHERE date = :date AND hours between :lastHours AND :hours");
+$stmt = $pdo->prepare("SELECT * FROM messages WHERE date = :date AND hours between :lastHours AND :hours order by hours desc");
 $stmt->bindValue(':date', $date);
 $stmt->bindValue(':hours', $hours);
 $stmt->bindValue(':lastHours', $lastHours);
