@@ -145,17 +145,9 @@ export default {
       this.startTimer()
 
       if (this.token !== '') {
-        axios.post('http://localhost:8000/update-date.php', {
-          token : this.token
-        })
-            .then(()=> {
-              document.cookie = `token=${this.token}; expires=${now}; path=/;`;
-              clearTimeout(this.chrono);
-              this.chrono = setTimeout(this.expireCookie, 3600000);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
+        document.cookie = `token=${this.token}; expires=${now}; path=/;`;
+        clearTimeout(this.chrono);
+        this.chrono = setTimeout(this.expireCookie, 3600000);
 
 
       }
@@ -163,7 +155,17 @@ export default {
     startTimer() {
       clearTimeout(this.timerStart)
       this.timerStart = setInterval(() => {
-        this.timer--
+        this.timer--;
+        axios.post('http://localhost:8000/update-date.php', {
+          token : this.token
+        })
+            .then(()=> {
+
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
       }, 1000)
 
     },
