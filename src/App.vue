@@ -18,10 +18,13 @@
       <button @click="setUsername">Choisir ce nom</button>
     </div>
   </div>
-  <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes">{{ minutes }} : 0{{seconds}}  </h3>
-  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10"> 0{{ minutes }} : {{seconds}}  </h3>
-  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10 && seconds <10"> 0{{ minutes }} : 0{{seconds}}  </h3>
-  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes> 9 && seconds > 9"> {{ minutes }} : {{seconds}}  </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes">{{ minutes }} :
+    0{{ seconds }} </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10"> 0{{ minutes }} : {{ seconds }} </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes < 10 && seconds <10"> 0{{ minutes }} :
+    0{{ seconds }} </h3>
+  <h3 :style="{color : recupererCookie('color-name')}" v-if="minutes> 9 && seconds > 9"> {{ minutes }} :
+    {{ seconds }} </h3>
 
 
 </template>
@@ -142,14 +145,24 @@ export default {
       this.startTimer()
 
       if (this.token !== '') {
+        axios.post('http://localhost:8000/update-date.php', {
+          token : this.token
+        })
+            .then((response)=> {
+              console.log(response)
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+
         document.cookie = `token=${this.token}; expires=${now}; path=/;`;
         clearTimeout(this.chrono);
         this.chrono = setTimeout(this.expireCookie, 3600000);
       }
     },
-    startTimer(){
+    startTimer() {
       clearTimeout(this.timerStart)
-      this.timerStart = setInterval(()=>{
+      this.timerStart = setInterval(() => {
         this.timer--
       }, 1000)
 
@@ -170,7 +183,18 @@ export default {
       }
       return null;
     },
+
+
+    async deleteInactifUser() {
+      try {
+        const response = await axios.get('http://localhost:8000/delete-inactif-user.php');
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    },
   },
+
 
   created() {
     this.getConnect();
@@ -178,6 +202,7 @@ export default {
     if (!this.recupererCookie('color-name')) {
       document.cookie = `color-name=white; path=/`
     }
+    this.deleteInactifUser();
 
   },
 }
