@@ -16,7 +16,7 @@
     </div>
   </div>
   <div id="user-color" v-if="username && modif === false">
-    <p id="logout">Se déconnecter</p>
+    <p id="logout" @click="disconnected">Se déconnecter</p>
     <div id="succesChange" v-if="isUpdate">{{isUpdate}}</div>
     <p id="colorBtn" @click="colorDisplay">Changer la couleur</p>
   </div>
@@ -74,6 +74,20 @@ export default {
             this.isUpdate = response.data
             this.modif = false
             document.cookie = `color-name=${this.choice}; path=/`
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+    },
+    disconnected(){
+      axios.post('http://localhost:8000/disconnect.php', {
+        token : this.recupererCookie('token')
+      })
+          .then((response)=> {
+            if (response.data === 'disconnected') {
+              document.cookie = `token=${this.token}; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+              location.href = 'http://localhost:8080/';
+            }
           })
           .catch(function (error) {
             console.log(error);

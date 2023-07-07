@@ -12,7 +12,7 @@
     </div>
 
 
-    <h1>Username</h1>
+    <h1>{{this.username}}</h1>
     <div v-if="!connected">
       <input type="text" v-model="username">
       <button @click="setUsername">Choisir ce nom</button>
@@ -111,7 +111,7 @@ export default {
             this.connected = sessionStorage['Connected']
             this.token = response.data.token
           } else {
-            alert('Please enter username & password');
+            alert('Please enter username');
           }
         })
             .catch(function (error) {
@@ -148,16 +148,16 @@ export default {
         axios.post('http://localhost:8000/update-date.php', {
           token : this.token
         })
-            .then((response)=> {
-              console.log(response)
+            .then(()=> {
+              document.cookie = `token=${this.token}; expires=${now}; path=/;`;
+              clearTimeout(this.chrono);
+              this.chrono = setTimeout(this.expireCookie, 3600000);
             })
             .catch(function (error) {
               console.log(error);
             });
 
-        document.cookie = `token=${this.token}; expires=${now}; path=/;`;
-        clearTimeout(this.chrono);
-        this.chrono = setTimeout(this.expireCookie, 3600000);
+
       }
     },
     startTimer() {
