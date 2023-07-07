@@ -15,7 +15,7 @@
     <h1>Username</h1>
     <div v-if="!connected">
       <input type="text" v-model="username">
-      <button @click="setUsername">Send</button>
+      <button @click="setUsername">Choisir ce nom</button>
     </div>
   </div>
   <h3 :style="{color : recupererCookie('color-name')}" v-if="seconds < 10  && minutes">{{ minutes }} : 0{{seconds}}  </h3>
@@ -210,7 +210,7 @@ h1 {
 
 #display {
   width: 100%;
-  height: 700px;
+  height: 550px;
   display: flex;
   flex-direction: row;
   align-content: center;
@@ -220,7 +220,7 @@ h1 {
 
 #user-display {
   width: 16.4%;
-  height: 710px;
+  height: 550px;
   display: flex;
   flex-direction: column;
 }

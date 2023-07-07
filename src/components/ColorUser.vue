@@ -53,8 +53,8 @@ export default {
     colorClick(color) {
       this.choice = color;
       document.querySelector('#' + color).style.border = 'white 2px groove';
-      document.querySelector('#' + color).style.width = '35px';
-      document.querySelector('#' + color).style.height = '35px';
+      document.querySelector('#' + color).style.width = '25px';
+      document.querySelector('#' + color).style.height = '25px';
 
     },
     colorDisplay(){
@@ -97,8 +97,8 @@ export default {
       console.log(newvalue)
       if (oldvalue !== 'none'){
         document.querySelector('#'+oldvalue).style.border = 'black 2px solid';
-        document.querySelector('#' + oldvalue).style.width = '35px';
-        document.querySelector('#' + oldvalue).style.height = '35px';
+        document.querySelector('#' + oldvalue).style.width = '20px';
+        document.querySelector('#' + oldvalue).style.height = '20px';
       }
     },
 
@@ -140,8 +140,8 @@ export default {
 }
 
 .color-choice {
-  width: 35px;
-  height: 35px;
+  width: 20px;
+  height: 20px;
   margin: 2px;
   border: 2px solid rgba(35, 35, 35, 0.94);
   border-radius: 50%;

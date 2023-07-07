@@ -97,4 +97,9 @@ form button {
   box-sizing: border-box;
 }
 
+#is-send {
+  color: #00ff73;
+  margin: 30px;
+}
+
 </style>

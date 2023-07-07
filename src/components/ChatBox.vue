@@ -1,6 +1,7 @@
 <template>
 <div id="chatBox" ref="chatbox">
-  <h3 id="messages" v-if="messagesList.length < 1">Aucun message pour le moment</h3>
+
+  <h3 id="messages" v-if="messagesList.length ===0">Aucun message pour le moment</h3>
   <div class="messages" v-else v-for="(messageList, index) in messagesList.reverse()" :key="index">
     <p><b><span style="color: #ffffff">{{ messageList.hours}}</span> {{ messageList.username }} :
     </b> <span style="color: #fff6f6; word-break: break-word;
@@ -18,7 +19,7 @@ export default {
     return {
       messagesList : [
         {id:"",
-          text:"q",
+          text:"",
           color:"",
           username:"",
           date:"",
